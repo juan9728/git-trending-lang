@@ -10,22 +10,21 @@ const sortObject = (obj) => {
     }, {});
 }
 
-const getAllData = async (since) => {
+const getData = async (since) => {
     const response = await fetch(`https://github.com/trending?since=${since}`);
     const data = await response.text();
     return data;
 }
 
+const countOfLangs = ($) => {
+    const counts = {};
+    $('[itemProp="programmingLanguage"]').each((_, e) => counts[$(e).text()] = (counts[$(e).text()] || 0) + 1);
+    return sortObject(counts);
+}
+
 const all = async (time) => {
-    const data = await getAllData(time);
-    const $ = cheerio.load(data);
-    const span = $('[itemProp="programmingLanguage"]');
-    const counts = {}; 
-    const text = span.each((_, e) => {
-        const x = $(e).text();
-        counts[x] = ((counts[x] || 0) + 1);
-    });
-    console.table(sortObject(counts));
+    const res = await getData(time);
+    console.table(countOfLangs(cheerio.load(res)));
 }
 
 const executeAll = () => {
