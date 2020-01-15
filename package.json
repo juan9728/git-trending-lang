@@ -1,0 +1,19 @@
+{
+  "name": "superscript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axel": "0.0.3",
+    "node-fetch": "^2.6.0",
+    "npm": "^6.13.6"
+  },
+  "devDependencies": {
+    "cheerio": "^1.0.0-rc.3"
+  },
+  "type": "module"
+}
