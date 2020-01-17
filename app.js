@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 
 const sortObject = (obj) => {
     let arr = [];
-    Object.keys(obj).forEach(prop => obj[prop] && (arr = [...arr, {'key': prop, 'value': obj[prop]}]));
+    Object.keys(obj).forEach(key => obj[key] && (arr = [...arr, {'key': key, 'value': obj[key]}]));
     return arr.sort((a,b) => b.value - a.value).reduce((obj, item) => {
         obj[item.key] = item.value;
         return obj;
@@ -16,24 +16,23 @@ const getData = async (since) => {
     return data;
 }
 
-const countOfLangs = ($) => {
+const countLangs = ($) => {
     const counts = {};
-    $('[itemProp="programmingLanguage"]').each((_, e) => counts[$(e).text()] = (counts[$(e).text()] || 0) + 1);
+    const toText = a => $(a).text(); 
+    $('[itemProp="programmingLanguage"]').each((_, e) => counts[toText(e)] = (counts[toText(e)] || 0) + 1);
     return sortObject(counts);
 }
 
 const all = async (time) => {
     const res = await getData(time);
-    console.table(countOfLangs(cheerio.load(res)));
+    console.table(countLangs(cheerio.load(res)));
 }
 
-const executeAll = () => {
-    const since = process.argv[2];
-    if(since != "daily" && since != "monthly" && since != "weekly"){
-        console.log("\x1b[31m", "Values: daily, weekly, monthly");
-    } else {
-        all(since);
-    }
+const checkArg = arg => arg == "daily" || arg == "monthly" || since == "weekly";
+
+const executeAll = (since) => {
+    const arg = checkArg(since);
+    arg ? all(since) : console.error("\x1b[31m", "Values: daily, weekly, monthly");
 }
 
-executeAll();
+executeAll(process.argv[2]);
