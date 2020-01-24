@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "axel": "0.0.3",
+    "chalk-animation": "^1.6.0",
     "node-fetch": "^2.6.0",
     "npm": "^6.13.6"
   },
